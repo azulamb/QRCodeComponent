@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<title>QRCodeComponent</title>
+	<script type="text/javascript" src="./qr-code.js"></script>
+	<script type="text/javascript">
+document.addEventListener( 'DOMContentLoaded', function() {
+	document.getElementById( 'text' ).addEventListener( 'change', function() {
+		document.getElementById( 'qr' ).value = this.value;
+	} );
+} );
+	</script>
+</head>
+<body>
+	<div><qr-code value="test" scale="2"></qr-code></div>
+	<div><qr-code value="test" scale="2" margin="8"></qr-code></div>
+	<div><qr-code value="test" scale="2" style="width:80px"></qr-code></div>
+	<div><qr-code value="test" scale="2" style="background-color:lightgray;color:gray;"></qr-code></div>
+	<div>
+		<qr-code id="qr" value="test" style="width:80px"></qr-code>
+		<input id="text" type="text" value="test">
+	</div>
+</body>
+</html>

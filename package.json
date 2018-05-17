@@ -1,0 +1,25 @@
+{
+  "name": "qrcodecomponent",
+  "version": "1.0.0",
+  "description": "Web Components to draw QRCode",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p src",
+    "minify": "uglifyjs ./docs/qr-code.js -c --mangle -o ./docs/qr-code.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HirokiMiyaoka/QRCodeComponent.git"
+  },
+  "author": "Hiroki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HirokiMiyaoka/QRCodeComponent/issues"
+  },
+  "devDependencies": {
+    "qrlite": "git+https://github.com/HirokiMiyaoka/QRLite#master",
+    "uglify-es": "^3.3.9"
+  },
+  "homepage": "https://github.com/HirokiMiyaoka/QRCodeComponent#readme"
+}
