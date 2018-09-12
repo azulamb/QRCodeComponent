@@ -43,7 +43,7 @@
 
 		public draw( x: number, y: number )
 		{
-			this.r.push( new SVGRect( x, y, 1, 1, this.front ) );
+			this.r.push( new SVGRect( x, y, 1.1, 1.1, this.front ) );
 		}
 
 		public update( svg: HTMLElement )
@@ -126,7 +126,7 @@
 			{
 				for ( let x = 0 ; x < qr.width ; ++x )
 				{
-					if ( qr.getPixel( x, y ) ) { continue; }
+					if ( !qr.getPixel( x, y ) ) { continue; }
 					context.fillRect( ( x + margin ) * scale, ( y + margin ) * scale, scale, scale );
 					svg.draw( x + margin, y + margin );
 				}
