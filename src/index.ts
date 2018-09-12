@@ -1,6 +1,6 @@
 /// <reference path="../node_modules/qrlite/src/qrlite.ts" />
 
-(() =>
+document.addEventListener( 'DOMContentLoaded', () =>
 {
 	class SVGRect
 	{
@@ -98,19 +98,29 @@
 			this.update();
 		}
 
+		private getLevel()
+		{
+			const level = this.getAttribute( 'level' );
+			if ( level === 'L' || level === 'M' || level === 'Q' || level === 'H' ) { return <QRLite.Level>level; }
+			return 'Q';
+		}
+
 		private update()
 		{
 			const text = this.getAttribute( 'value' ) || '';
+			const level = this.getLevel();
 			const margin = Math.floor( this.positiveNumber( this.getAttribute( 'margin' ) || '', 4 ) );
 			const scale = this.positiveNumber( this.getAttribute( 'scale' ) || '' );
 			const back = this.style.getPropertyValue('background-color') || '#ffffff';
 			const front = this.style.getPropertyValue('color') || '#000000';
 
-			const qr = QRLite.convert( text );
+			const qr = new QRLite.Generator();
+			const bc = qr.convert( text, level );
+			this.setAttribute( 'level', qr.getLevel() );
 
 			const canvas = <HTMLCanvasElement>this.shadow.getElementById( 'qr' );
-			canvas.width = qr.width + margin * 2;
-			canvas.height = qr.height + margin * 2;
+			canvas.width = bc.width + margin * 2;
+			canvas.height = bc.height + margin * 2;
 
 			const svg = new SVG( canvas.width, canvas.height, back, front );
 
@@ -122,11 +132,11 @@
 			context.fillRect( 0, 0, canvas.width, canvas.height );
 			context.fillStyle = front;
 
-			for ( let y = 0 ; y < qr.height ; ++y )
+			for ( let y = 0 ; y < bc.height ; ++y )
 			{
-				for ( let x = 0 ; x < qr.width ; ++x )
+				for ( let x = 0 ; x < bc.width ; ++x )
 				{
-					if ( !qr.getPixel( x, y ) ) { continue; }
+					if ( !bc.getPixel( x, y ) ) { continue; }
 					context.fillRect( ( x + margin ) * scale, ( y + margin ) * scale, scale, scale );
 					svg.draw( x + margin, y + margin );
 				}
@@ -141,4 +151,4 @@
 	document.head.appendChild( style );
 
 	customElements.define( 'qr-code', CRCodeComponent );
-})();
+} );
