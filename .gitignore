@@ -62,3 +62,5 @@ typings/
 
 *.sublime-workspace
 package-lock.json
+
+tmp/
