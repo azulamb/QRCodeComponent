@@ -27,6 +27,12 @@ https://hirokimiyaoka.github.com/QRCodeComponent/
 
 Download [./docs/qr-code.js](https://github.com/HirokiMiyaoka/QRCodeComponent/raw/master/docs/qr-code.js)
 
+or
+
+```
+https://hirokimiyaoka.github.io/QRCodeComponent/qr-code.js
+```
+
 # How to use
 
 ## Load
@@ -44,6 +50,18 @@ Download [./docs/qr-code.js](https://github.com/HirokiMiyaoka/QRCodeComponent/ra
 ```
 qrcodeElement.value = 'test';
 ```
+
+## Set level
+
+```
+<qr-code level="L""></qr-code>
+```
+
+```
+qrcodeElement.value = 'L';
+```
+
+level = `L` | `M` | `Q` | `H`
 
 ## Size
 
@@ -91,12 +109,24 @@ qrcodeElement.style.backgroundColor = 'lightgray';
 qrcodeElement.style.color = 'gray';
 ```
 
+# Default style
+
+Add default style in `<head>`.
+
+```
+qr-code { display: inline-block; }
+```
+
 # Other
 
 ## TODO
 
 * SVGを保存したい。
     * getterだけでも用意すべきか。
+* Styleを`<head>`の先頭に。
+* どこまでダイエットできるか
+    * 読み込みパターン周りも計算できるならそれにしたいが、なかなか面倒。
+    ＊G(x)も計算はできるがコード量とかも考えてどうしようか考え中。
 
 ## Comment
 
