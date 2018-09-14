@@ -44,7 +44,7 @@ https://hirokimiyaoka.github.io/QRCodeComponent/qr-code.js
 ## Set value
 
 ```
-<qr-code value="test""></qr-code>
+<qr-code value="test"></qr-code>
 ```
 
 ```
@@ -54,7 +54,7 @@ qrcodeElement.value = 'test';
 ## Set level
 
 ```
-<qr-code level="L""></qr-code>
+<qr-code level="L"></qr-code>
 ```
 
 ```
