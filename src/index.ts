@@ -65,6 +65,8 @@
 		{
 			private shadow: ShadowRoot;
 
+			private updatenow = false;
+
 			constructor()
 			{
 				super();
@@ -80,17 +82,33 @@
 
 			static get observedAttributes()
 			{
-				return [ 'value', 'scale' ];
+				return [ 'value', 'level', 'mask', 'version', 'scale', 'margin' ];
 			}
 
 			private positiveNumber( num: string, def: number = 1 )
 			{
-				const scale = parseInt( num || '' ) || 0;
-				return scale <= 0 ? def : scale;
+				const value = parseInt( num || '' ) || 0;
+				return value <= 0 ? def : value;
+			}
+
+			private numberInRange( num: string, min: number, max: number )
+			{
+				const value = parseInt( num || '' ) || 0;
+				if ( min <= value && value <= max ) { return value; }
+				return -1;
 			}
 
 			get value() { return this.getAttribute( 'value' ); }
 			set value( value ) { this.setAttribute( 'value', value || '' ); }
+
+			get level() { return this.getAttribute( 'level' ) || ''; }
+			set level( value ) { this.setAttribute( 'level', value || '' ); }
+
+			get mask() { return this.numberInRange( this.getAttribute( 'mask' ) || '', 0, 7 ); }
+			set mask( value ) { this.setAttribute( 'mask', value + '' ); }
+
+			get version() { return this.numberInRange( this.getAttribute( 'version' ) || '', 1, 40 ); }
+			set version( value ) { this.setAttribute( 'version', value + '' ); }
 
 			get scale() { return this.positiveNumber( this.getAttribute( 'scale' ) || '' ); }
 			set scale( value ) { this.setAttribute( 'scale', value + '' ); }
@@ -100,6 +118,7 @@
 
 			public attributeChangedCallback( name: string, oldValue: any, newValue: any )
 			{
+				if ( oldValue === newValue ) { return; }
 				this.update();
 			}
 
@@ -107,11 +126,13 @@
 			{
 				const level = this.getAttribute( 'level' );
 				if ( level === 'L' || level === 'M' || level === 'Q' || level === 'H' ) { return <QRLite.Level>level; }
-				return 'Q';
+				return 'H';
 			}
 
 			private update()
 			{
+				if ( this.updatenow ) { return; }
+				this.updatenow = true;
 				const text = this.getAttribute( 'value' ) || '';
 				const level = this.getLevel();
 				const margin = Math.floor( this.positiveNumber( this.getAttribute( 'margin' ) || '', 4 ) );
@@ -119,9 +140,15 @@
 				const back = this.style.getPropertyValue('background-color') || '#ffffff';
 				const front = this.style.getPropertyValue('color') || '#000000';
 
+				const option: QRLite.ConvertOption = { level: level };
+				const version = this.version;
+				if ( 0 < version ) { option.version = version; }
+				const mask = this.mask;
+				if ( 0 <= mask ) { option.mask = mask; }
 				const qr = new QRLite.Generator();
-				const bc = qr.convert( text, level );
+				const bc = qr.convert( text, option );
 				this.setAttribute( 'level', qr.getLevel() );
+				this.setAttribute( 'version', qr.getVersion() + '' );
 
 				const canvas = <HTMLCanvasElement>this.shadow.getElementById( 'qr' );
 				canvas.width = bc.width + margin * 2;
@@ -148,6 +175,7 @@
 				}
 
 				svg.update( <HTMLElement>this.shadow.getElementById( 'svg' ) );
+				this.updatenow = false;
 			}
 		}
 
