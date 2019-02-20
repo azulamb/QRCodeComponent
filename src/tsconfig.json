@@ -4,6 +4,7 @@
 		"module": "amd",
 		"target": "es2015",
 		"moduleResolution": "node",
+		"declaration": true,
 		"strictNullChecks": true,
 		"noImplicitAny": true,
 		"removeComments": true,

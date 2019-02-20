@@ -1,6 +1,6 @@
 {
   "name": "qrcodecomponent",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Web Components to draw QRCode",
   "main": "index.js",
   "scripts": {

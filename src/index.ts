@@ -1,8 +1,38 @@
 /// <reference path="../node_modules/qrlite/src/qrlite.ts" />
 
+/*
+<script src="./qr-code.js" tagname="TAG-NAME"></script>
+TAG-NAME ... default: qr-code
+
+<qr-code value="VALUE" level="LEVEL" mask="MASK" version="VERSION" scale="SCALE" margin="MARGIN"></qr-code>
+VALUE   ... QRCode value.
+LEVEL   ... QRCode level. 'L', 'M', 'Q', 'H'
+MASK    ... QRCode mask number. 0 ... 7
+VERSION ... QRCode version. 1 ... 40
+SCALE   ... QRCode scale.
+MARGIN  ... QRCode frame margin.
+
+element.value   ... VALUE.
+element.level   ... LEVEL.
+element.mask    ... MASK.
+element.version ... VERSION.
+element.scale   ... SCALE.
+element.margin  ... MARGIN.
+*/
+
+interface QRCodeElement extends HTMLElement
+{
+	value: string,
+	level: QRLite.Level | '',
+	mask: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7,
+	version: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40,
+	scale: number,
+	margin: number,
+}
+
 ( ( script ) =>
 {
-	const tagname = ( script ? script.dataset.name : '' ) || 'qr-code';
+	const tagname = ( script ? script.dataset.tagname : '' ) || 'qr-code';
 	if ( customElements.get( tagname ) ) { return; }
 
 	function Init()
@@ -61,7 +91,7 @@
 			}
 		}
 
-		class CRCodeComponent extends HTMLElement
+		class CRCodeComponent extends HTMLElement implements QRCodeElement
 		{
 			private shadow: ShadowRoot;
 
@@ -98,16 +128,16 @@
 				return -1;
 			}
 
-			get value() { return this.getAttribute( 'value' ); }
+			get value() { return this.getAttribute( 'value' ) || ''; }
 			set value( value ) { this.setAttribute( 'value', value || '' ); }
 
-			get level() { return this.getAttribute( 'level' ) || ''; }
+			get level() { return <QRLite.Level | ''>this.getAttribute( 'level' ) || ''; }
 			set level( value ) { this.setAttribute( 'level', value || '' ); }
 
-			get mask() { return this.numberInRange( this.getAttribute( 'mask' ) || '', 0, 7 ); }
+			get mask() { return <0 | 1 | 2 | 3 | 4 | 5 | 6 | 7>this.numberInRange( this.getAttribute( 'mask' ) || '', 0, 7 ); }
 			set mask( value ) { this.setAttribute( 'mask', value + '' ); }
 
-			get version() { return this.numberInRange( this.getAttribute( 'version' ) || '', 1, 40 ); }
+			get version() { return <1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40>this.numberInRange( this.getAttribute( 'version' ) || '', 1, 40 ); }
 			set version( value ) { this.setAttribute( 'version', value + '' ); }
 
 			get scale() { return this.positiveNumber( this.getAttribute( 'scale' ) || '' ); }

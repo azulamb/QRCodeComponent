@@ -3,10 +3,10 @@
 <head>
 	<meta charset="utf-8">
 	<title>QRCodeComponent</title>
-	<script type="text/javascript" src="./qr-code.js"></script>
-	<script type="text/javascript">
-document.addEventListener( 'DOMContentLoaded', function() {
-	document.getElementById( 'text' ).addEventListener( 'change', function() {
+	<script src="./qr-code.js"></script>
+	<script>
+document.addEventListener( 'DOMContentLoaded', () => {
+	document.getElementById( 'text' ).addEventListener( 'change', () => {
 		document.getElementById( 'qr' ).value = this.value;
 	} );
 } );
