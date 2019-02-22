@@ -1,4 +1,5 @@
 /// <reference path="../node_modules/qrlite/src/qrlite.ts" />
+/// <reference path="../node_modules/qrlite/docs/qrlite.d.ts" />
 
 /*
 <script src="./qr-code.js" tagname="TAG-NAME"></script>
@@ -23,7 +24,7 @@ element.margin  ... MARGIN.
 interface QRCodeElement extends HTMLElement
 {
 	value: string,
-	level: QRLite.Level | '',
+	level: QRLiteLevel | '',
 	mask: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7,
 	version: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40,
 	scale: number,
@@ -131,7 +132,7 @@ interface QRCodeElement extends HTMLElement
 			get value() { return this.getAttribute( 'value' ) || ''; }
 			set value( value ) { this.setAttribute( 'value', value || '' ); }
 
-			get level() { return <QRLite.Level | ''>this.getAttribute( 'level' ) || ''; }
+			get level() { return <QRLiteLevel | ''>this.getAttribute( 'level' ) || ''; }
 			set level( value ) { this.setAttribute( 'level', value || '' ); }
 
 			get mask() { return <0 | 1 | 2 | 3 | 4 | 5 | 6 | 7>this.numberInRange( this.getAttribute( 'mask' ) || '', 0, 7 ); }
@@ -155,7 +156,7 @@ interface QRCodeElement extends HTMLElement
 			private getLevel()
 			{
 				const level = this.getAttribute( 'level' );
-				if ( level === 'L' || level === 'M' || level === 'Q' || level === 'H' ) { return <QRLite.Level>level; }
+				if ( level === 'L' || level === 'M' || level === 'Q' || level === 'H' ) { return <QRLiteLevel>level; }
 				return 'H';
 			}
 
@@ -170,7 +171,7 @@ interface QRCodeElement extends HTMLElement
 				const back = this.style.getPropertyValue('background-color') || '#ffffff';
 				const front = this.style.getPropertyValue('color') || '#000000';
 
-				const option: QRLite.ConvertOption = { level: level };
+				const option: QRLiteConvertOption = { level: level };
 				const version = this.version;
 				if ( 0 < version ) { option.version = version; }
 				const mask = this.mask;
