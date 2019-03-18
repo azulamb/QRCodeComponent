@@ -123,7 +123,7 @@ qrcodeElement.style.color = 'gray';
 # Default style
 
 ``` css
-qr-code { display: inline-block; }
+qr-code { display: inline-block; --back: #ffffff; --front: #000000; }
 ```
 
 # Types
