@@ -181,8 +181,8 @@ interface QRCodeElement extends HTMLElement
 			const level = this.getLevel();
 			const margin = Math.floor( this.positiveNumber( this.getAttribute( 'margin' ) || '', 4 ) );
 			const scale = this.positiveNumber( this.getAttribute( 'scale' ) || '' );
-			const back = this.style.getPropertyValue('--back') || '#fff';
-			const front = this.style.getPropertyValue('--front') || '#000';
+			const back = getComputedStyle( this ).getPropertyValue('--back') || '#fff';
+			const front = getComputedStyle( this ).getPropertyValue('--front') || '#000';
 
 			const option: QRLiteConvertOption = { level: level };
 			const version = this.version;
