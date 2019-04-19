@@ -120,6 +120,14 @@ qrcodeElement.style.backgroundColor = 'lightgray';
 qrcodeElement.style.color = 'gray';
 ```
 
+## Copy data.
+
+You can copy value to clipboard.
+
+```js
+qrcodeElement.copyToClipboard();
+```
+
 # Default style
 
 ``` css

@@ -21,6 +21,10 @@ element.mask    ... MASK.
 element.version ... VERSION.
 element.scale   ... SCALE.
 element.margin  ... MARGIN.
+
+Method:
+element.copyToClipboard() : boolean
+  Copy value to clipboard.
 */
 
 
@@ -32,6 +36,7 @@ interface QRCodeElement extends HTMLElement
 	version: QRLiteVersion,
 	scale: number,
 	margin: number,
+	copyToClipboard() : boolean,
 }
 
 ( ( script ) =>
@@ -100,7 +105,7 @@ interface QRCodeElement extends HTMLElement
 			super();
 
 			const template = document.createElement( 'template' );
-			template.innerHTML = `<style>:host{display:inline-block;--back:#fff;--front:#000;}div{position:relative}canvas,svg{width:100%;display:block}svg{position:absolute;top:0;left:0;height:100%;pointer-events:none}</style><div><canvas id="qr"></canvas><svg id="svg" width="29px" height="29px" viewBox="0 0 29 29"></svg></div>`;
+			template.innerHTML = `<style>:host{display:inline-block;--back:#fff;--front:#000;}div{position:relative}canvas,svg{width:100%;display:block}svg{position:absolute;top:0;left:0;height:100%;pointer-events:none}#copy{user-select:auto;display:block;border:0;outline:none;overflow:hidden;width:0;height:0;position:absolute;padding:0;}</style><div><canvas id="qr"></canvas><svg id="svg" width="29px" height="29px" viewBox="0 0 29 29"></svg><textarea id="copy"></textarea></div>`;
 
 			this.shadow = this.attachShadow( { mode: 'open' } );
 			this.shadow.appendChild( document.importNode( template.content, true ) );
@@ -214,7 +219,20 @@ interface QRCodeElement extends HTMLElement
 			}
 
 			svg.update( <any>this.shadow.getElementById( 'svg' ) );
+
+			(<HTMLTextAreaElement>this.shadow.getElementById( 'copy' )).value = text;
 			this.updatenow = false;
+		}
+
+		public copyToClipboard()
+		{
+			const text = <HTMLTextAreaElement>this.shadow.getElementById( 'copy' );
+			text.selectionStart = 0;
+			text.selectionEnd = text.value.length;
+			text.focus();
+			const result = document.execCommand( 'copy' );
+			text.blur();
+			return result;
 		}
 	}
 

@@ -10,7 +10,7 @@
     }
 })(() => {
     const qrlite = {
-        Version: '1.0.1',
+        Version: '1.1.0',
         White: false,
         Black: true,
         Info: null,
@@ -668,7 +668,7 @@
             version = Math.floor(version);
             const data = this.rawdata || '';
             const min = this.searchVersion(data.length, this.level);
-            this.version = (1 <= version && version <= 40 && min <= version) ? version : min;
+            this.version = ((1 <= version && version <= 40 && min <= version) ? version : min);
             if (this.version <= 0) {
                 return 0;
             }
@@ -1747,7 +1747,7 @@
             super();
             this.updatenow = false;
             const template = document.createElement('template');
-            template.innerHTML = `<style>:host{display:inline-block;--back:#fff;--front:#000;}div{position:relative}canvas,svg{width:100%;display:block}svg{position:absolute;top:0;left:0;height:100%;pointer-events:none}</style><div><canvas id="qr"></canvas><svg id="svg" width="29px" height="29px" viewBox="0 0 29 29"></svg></div>`;
+            template.innerHTML = `<style>:host{display:inline-block;--back:#fff;--front:#000;}div{position:relative}canvas,svg{width:100%;display:block}svg{position:absolute;top:0;left:0;height:100%;pointer-events:none}#copy{user-select:auto;display:block;border:0;outline:none;overflow:hidden;width:0;height:0;position:absolute;padding:0;}</style><div><canvas id="qr"></canvas><svg id="svg" width="29px" height="29px" viewBox="0 0 29 29"></svg><textarea id="copy"></textarea></div>`;
             this.shadow = this.attachShadow({ mode: 'open' });
             this.shadow.appendChild(document.importNode(template.content, true));
             this.update();
@@ -1844,7 +1844,17 @@
                 }
             }
             svg.update(this.shadow.getElementById('svg'));
+            this.shadow.getElementById('copy').value = text;
             this.updatenow = false;
+        }
+        copyToClipboard() {
+            const text = this.shadow.getElementById('copy');
+            text.selectionStart = 0;
+            text.selectionEnd = text.value.length;
+            text.focus();
+            const result = document.execCommand('copy');
+            text.blur();
+            return result;
         }
     }
     function Init() {
