@@ -105,7 +105,7 @@ interface QRCodeElement extends HTMLElement
 			super();
 
 			const template = document.createElement( 'template' );
-			template.innerHTML = `<style>:host{display:inline-block;--back:#fff;--front:#000;}div{position:relative}canvas,svg{width:100%;display:block}svg{position:absolute;top:0;left:0;height:100%;pointer-events:none}#copy{user-select:auto;display:block;border:0;outline:none;overflow:hidden;width:0;height:0;position:absolute;padding:0;}</style><div><canvas id="qr"></canvas><svg id="svg" width="29px" height="29px" viewBox="0 0 29 29"></svg><textarea id="copy"></textarea></div>`;
+			template.innerHTML = `<style>:host{display:inline-block;--back:#fff;--front:#000;}div{position:relative}canvas,svg{width:100%;display:block}svg{position:absolute;top:0;left:0;height:100%;pointer-events:none}#copy{user-select:auto;display:block;border:0;outline:none;overflow:hidden;width:0;height:0;position:absolute;padding:0;font-size:16px;}</style><div><canvas id="qr"></canvas><svg id="svg" width="29px" height="29px" viewBox="0 0 29 29"></svg><textarea id="copy" readonly="readonly"></textarea></div>`;
 
 			this.shadow = this.attachShadow( { mode: 'open' } );
 			this.shadow.appendChild( document.importNode( template.content, true ) );
@@ -227,11 +227,21 @@ interface QRCodeElement extends HTMLElement
 		public copyToClipboard()
 		{
 			const text = <HTMLTextAreaElement>this.shadow.getElementById( 'copy' );
-			text.selectionStart = 0;
-			text.selectionEnd = text.value.length;
-			text.focus();
+			text.select();
+			const range = document.createRange();
+			range.selectNodeContents( text );
+
+			const selection = getSelection();
+			if ( !selection ) { return false; }
+
+			selection.removeAllRanges();
+			selection.addRange( range );
+			text.setSelectionRange( 0, text.value.length );
+
 			const result = document.execCommand( 'copy' );
-			text.blur();
+
+			selection.removeAllRanges();
+
 			return result;
 		}
 	}
