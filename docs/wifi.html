@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja" style="font-size:2rem;">
+<head>
+	<meta charset="utf-8">
+	<title>Wi-Fi QRCode sample - QRCodeComponent</title>
+	<script src="./qr-code.js"></script>
+	<script>
+document.addEventListener( 'DOMContentLoaded', () => {
+	const protocol = document.querySelector( 'select' );
+	const ssid = document.querySelector( 'input[type="text"]' );
+	const password = document.querySelector( 'input[type="password"]' );
+	const Update = ( ( qr ) =>
+	{
+		return () =>
+		{
+			qr.value = `WIFI:T:${ protocol.options[ protocol.selectedIndex ].value };S:${ ssid.value };P:${ password.value };;`;
+			console.log(qr.value);
+		};
+	} )( document.querySelector( 'qr-code' ) );
+
+	protocol.addEventListener( 'change', () => { Update(); } );
+	password.addEventListener( 'change', () => { Update(); } );
+	ssid.addEventListener( 'change', () => { Update(); } );
+	document.querySelector( 'button' ).addEventListener( 'click', () => { Update(); } );
+} );
+	</script>
+</head>
+<body style="text-align:center;">
+	<qr-code value="" scale="4"></qr-code>
+	<div style="display:grid;grid-template-rows:1fr 1fr 1fr 1fr;grid-template-columns:1fr 1fr;width:100%;max-width:700px;margin:auto;">
+		<span>Security</span>
+		<select style="font-size:1rem;">
+			<option value="WEP">WEP</option>
+			<option value="WPA">WPA</option>
+			<option value="WPA2" selected>WPA2</option>
+			<option value="WPA3">WPA3</option>
+		</select>
+		<span>SSID</span>
+		<input type="text" style="font-size:1rem;">
+		<span>Password</span>
+		<input type="password" style="font-size:1rem;">
+		<button style="grid-area:4 / 1 / 5 / 3;font-size:1rem;">Generate</button>
+	</div>
+</body>
+</html>
